@@ -25,8 +25,24 @@ function InstagramEmbed({ url }: { url: string }) {
   const ref = useRef<HTMLQuoteElement>(null);
 
   useEffect(() => {
-    // embed.js를 한 번만 로드 (전역)
     const SRC = "https://www.instagram.com/embed.js";
+
+    const tryProcess = (): boolean => {
+      if (window.instgrm?.Embeds) {
+        try {
+          window.instgrm.Embeds.process();
+          return true;
+        } catch {
+          return false;
+        }
+      }
+      return false;
+    };
+
+    // 1. 스크립트가 이미 로드돼있으면 즉시 시도
+    if (tryProcess()) return;
+
+    // 2. 스크립트가 없으면 추가 + onload에서 처리
     const existing = document.querySelector<HTMLScriptElement>(
       `script[src="${SRC}"]`,
     );
@@ -34,15 +50,20 @@ function InstagramEmbed({ url }: { url: string }) {
       const script = document.createElement("script");
       script.src = SRC;
       script.async = true;
+      script.onload = () => tryProcess();
       document.body.appendChild(script);
     }
-    // 다시 process — embed.js가 이미 로드된 경우에도 새 blockquote 처리
-    const t = setTimeout(() => {
-      if (window.instgrm?.Embeds) {
-        window.instgrm.Embeds.process();
+
+    // 3. 폴링 — 스크립트 로드 + instgrm 객체 초기화 대기 (최대 5초)
+    let elapsed = 0;
+    const interval = window.setInterval(() => {
+      elapsed += 200;
+      if (tryProcess() || elapsed >= 5000) {
+        window.clearInterval(interval);
       }
-    }, 300);
-    return () => clearTimeout(t);
+    }, 200);
+
+    return () => window.clearInterval(interval);
   }, [url]);
 
   return (
@@ -52,6 +73,7 @@ function InstagramEmbed({ url }: { url: string }) {
         className="instagram-media"
         data-instgrm-permalink={url}
         data-instgrm-version="14"
+        data-instgrm-captioned=""
         style={{
           background: "#FFF",
           border: 0,
@@ -62,8 +84,13 @@ function InstagramEmbed({ url }: { url: string }) {
           width: "100%",
         }}
       >
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          Instagram에서 보기
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block p-4 text-sm text-[var(--fg-muted)]"
+        >
+          영상 로딩 중… 클릭 시 Instagram에서 보기
         </a>
       </blockquote>
     </div>
