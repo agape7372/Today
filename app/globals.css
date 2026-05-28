@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+
+  --color-accent-50: #f0f9ff;
+  --color-accent-100: #e0f2fe;
+  --color-accent-300: #7dd3fc;
+  --color-accent-500: #0ea5e9;
+  --color-accent-600: #0284c7;
+  --color-accent-700: #0369a1;
+
+  --color-warm-300: #fcd34d;
+  --color-warm-500: #f59e0b;
+  --color-warm-600: #d97706;
+
+  --color-surface: #fafaf9;
+  --color-surface-elevated: #ffffff;
+  --color-ink: #18181b;
+  --color-ink-muted: #52525b;
+  --color-line: #e4e4e7;
+
+  --color-surface-dark: #0c0a09;
+  --color-surface-elevated-dark: #1c1917;
+  --color-ink-dark: #fafaf9;
+  --color-ink-muted-dark: #a1a1aa;
+  --color-line-dark: #292524;
+
+  --font-sans:
+    "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+
+  --radius-card: 1.5rem;
+  --radius-card-inner: 1rem;
+
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px -4px rgb(0 0 0 / 0.06);
+  --shadow-lifted:
+    0 4px 8px -2px rgb(16 185 129 / 0.08), 0 20px 40px -12px rgb(0 0 0 / 0.12);
+}
+
+:root {
+  color-scheme: light;
+  --bg: var(--color-surface);
+  --bg-elevated: var(--color-surface-elevated);
+  --fg: var(--color-ink);
+  --fg-muted: var(--color-ink-muted);
+  --line: var(--color-line);
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: var(--color-surface-dark);
+  --bg-elevated: var(--color-surface-elevated-dark);
+  --fg: var(--color-ink-dark);
+  --fg-muted: var(--color-ink-muted-dark);
+  --line: var(--color-line-dark);
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* 글자 크기 토글 — 설정에서 조절 */
+html[data-font-scale="sm"] {
+  font-size: 15px;
+}
+html[data-font-scale="md"] {
+  font-size: 16px;
+}
+html[data-font-scale="lg"] {
+  font-size: 17.5px;
+}
+
+/* MDX prose styles — 단어형 종결 가독성 우선 */
+.prose-game {
+  color: var(--fg);
+  line-height: 1.75;
+}
+.prose-game h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  border-left: 3px solid var(--color-brand-500);
+  padding-left: 0.75rem;
+}
+.prose-game h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.prose-game ul,
+.prose-game ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+.prose-game ul {
+  list-style: none;
+}
+.prose-game ul li {
+  position: relative;
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+}
+.prose-game ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--color-brand-500);
+}
+.prose-game ol {
+  counter-reset: step;
+  list-style: none;
+}
+.prose-game ol li {
+  position: relative;
+  padding-left: 2rem;
+  margin: 0.75rem 0;
+  counter-increment: step;
+}
+.prose-game ol li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--color-brand-100);
+  color: var(--color-brand-700);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.dark .prose-game ol li::before {
+  background: color-mix(in oklab, var(--color-brand-500) 20%, transparent);
+  color: var(--color-brand-300);
+}
+.prose-game strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+.prose-game blockquote {
+  border-left: 3px solid var(--color-accent-500);
+  background: color-mix(in oklab, var(--color-accent-500) 8%, transparent);
+  padding: 0.75rem 1rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+
+/* 인쇄 친화 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .prose-game h2 {
+    border-left-color: black;
+  }
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+}
+
+/* 스크롤 바 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--fg-muted) 30%, transparent);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--fg-muted) 50%, transparent);
+  background-clip: padding-box;
+}
+
+/* 포커스 링 */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
