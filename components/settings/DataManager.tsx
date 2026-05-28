@@ -6,6 +6,7 @@ import { useFavorites } from "@/lib/favorites";
 import { useInventory } from "@/lib/inventory";
 import { useTraitOverrides } from "@/lib/trait-overrides";
 import { useVideoOverrides } from "@/lib/video-overrides";
+import { useContentOverrides } from "@/lib/content-overrides";
 import { useCustomTools } from "@/lib/tools";
 import { useSettings } from "@/lib/settings";
 import { endSession, removePin } from "@/lib/pin";
@@ -16,6 +17,7 @@ const KEYS_TO_RESET = [
   "today-inventory-v1",
   "today-trait-overrides-v1",
   "today-video-overrides-v1",
+  "today-content-overrides-v1",
   "today-custom-tools-v1",
   "today-settings-v1",
   "today-pin-hash-v1",
@@ -34,6 +36,8 @@ export function DataManager() {
   const { countOverrides } = useTraitOverrides();
   const { overrides: videoOverrides, count: videoOverrideCount } =
     useVideoOverrides();
+  const { overrides: contentOverrides, countOverrides: contentOverrideCount } =
+    useContentOverrides();
   const { customs } = useCustomTools();
   const { settings } = useSettings();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -51,6 +55,7 @@ export function DataManager() {
           localStorage.getItem("today-trait-overrides-v1") ?? "{}",
         ),
         videoOverrides,
+        contentOverrides,
         customTools: customs,
         settings,
       },
@@ -99,6 +104,12 @@ export function DataManager() {
           JSON.stringify(d.videoOverrides),
         );
       }
+      if (d.contentOverrides && typeof d.contentOverrides === "object") {
+        localStorage.setItem(
+          "today-content-overrides-v1",
+          JSON.stringify(d.contentOverrides),
+        );
+      }
       if (Array.isArray(d.customTools)) {
         localStorage.setItem(
           "today-custom-tools-v1",
@@ -139,6 +150,7 @@ export function DataManager() {
       "inventory-changed",
       "trait-overrides-changed",
       "video-overrides-changed",
+      "content-overrides-changed",
       "custom-tools-changed",
       "settings-changed",
       "pin-changed",
@@ -156,11 +168,12 @@ export function DataManager() {
       <h2 className="mt-0.5 text-lg font-bold">데이터 관리</h2>
 
       {/* 현황 요약 */}
-      <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+      <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
         <Stat label="즐겨찾기" value={favs.size} />
         <Stat label="보유 도구" value={ownedCount} />
         <Stat label="특성 수정" value={countOverrides} />
         <Stat label="영상 수정" value={videoOverrideCount} />
+        <Stat label="내용 수정" value={contentOverrideCount} />
         <Stat label="사용자 도구" value={customs.length} />
       </dl>
 
@@ -217,8 +230,8 @@ export function DataManager() {
               모든 데이터 초기화
             </p>
             <p className="mt-0.5 text-xs leading-relaxed text-rose-700/80 dark:text-rose-200/80">
-              즐겨찾기·인벤토리·특성 수정·사용자 도구·PIN 모두 삭제. 되돌릴 수
-              없음.
+              즐겨찾기·인벤토리·특성/영상/내용 수정·사용자 도구·PIN 모두 삭제.
+              되돌릴 수 없음.
             </p>
           </div>
         </div>

@@ -88,6 +88,71 @@ export function getToolsForGame(game: Game, tools: ToolDef[]): ToolDef[] {
   return Array.from(matched.values());
 }
 
+// ── 환경/인력/선택 항목 (구매 대상 아님) ──────────────────────
+// 어떤 도구에도 매칭 안 되지만 "장비"가 아닌 것: 공간·인력·선택·맨손.
+// "준비 완료" 판정을 막지 않도록 별도 분류.
+export const AMBIENT_HINTS = [
+  "좌석",
+  "바닥",
+  "공간",
+  "원형 배치",
+  "평평",
+  "보조자",
+  "보조 인력",
+  "보조 지팡이",
+  "도구 없이",
+  "도구 x",
+  "손만",
+  "(선택)",
+  "필요 시",
+  "점수 영역",
+  "골 표시",
+];
+
+export function isAmbientMaterial(material: string): boolean {
+  const t = material.toLowerCase();
+  return AMBIENT_HINTS.some((h) => t.includes(h.toLowerCase()));
+}
+
+export interface MaterialMatching {
+  /** alias로 도구에 매칭된 항목 (중복 제거) */
+  matched: ToolDef[];
+  /** 도구 매칭 실패 + 환경/인력/선택도 아닌 = 미등록 "장비" (직접 확인 필요) */
+  unmatchedEquipment: string[];
+  /** 도구 매칭 실패지만 공간·인력·선택 등 구매 불필요 항목 수 */
+  ambientCount: number;
+}
+
+// 게임의 모든 materials를 3분류: 매칭 도구 / 미등록 장비 / 환경·인력.
+// MaterialChips의 "준비 완료" 판정과 미등록 표시에 사용.
+export function getMaterialMatching(
+  game: Game,
+  tools: ToolDef[],
+): MaterialMatching {
+  const matched = new Map<string, ToolDef>();
+  const unmatchedEquipment: string[] = [];
+  let ambientCount = 0;
+
+  for (const m of game.materials) {
+    const text = m.toLowerCase();
+    const hits = tools.filter((t) =>
+      t.aliases.some((a) => text.includes(a.toLowerCase())),
+    );
+    if (hits.length === 0) {
+      if (isAmbientMaterial(m)) ambientCount += 1;
+      else unmatchedEquipment.push(m);
+    } else {
+      for (const h of hits) if (!matched.has(h.id)) matched.set(h.id, h);
+    }
+  }
+
+  return {
+    matched: Array.from(matched.values()),
+    unmatchedEquipment,
+    ambientCount,
+  };
+}
+
 // 역방향: 한 도구를 쓰는 게임들
 export function getGamesForTool(
   toolId: string,

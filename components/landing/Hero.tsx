@@ -73,9 +73,9 @@ export function Hero({ stats }: { stats: SiteStats }) {
           <br />
           뇌졸중·척수손상·파킨슨·노인을 위한{" "}
           <span className="font-semibold text-[var(--fg)]">
-            {stats.gameCount}개의 근거기반 활동
+            {stats.gameCount}개 근거기반 활동
           </span>
-          .
+          {" "}— 치료실 도구 현황과 현장 맞춤까지 한곳에.
         </motion.p>
 
         <motion.div

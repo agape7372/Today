@@ -34,7 +34,8 @@ export function FinalCTA({ stats }: { stats: SiteStats }) {
             게임을 찾아보세요.
           </h2>
           <p className="mt-4 max-w-xl text-white/90 sm:text-lg">
-            {stats.gameCount}개의 근거기반 활동을 30초 안에 비교. 가이드라인과 학술 근거가 함께.
+            {stats.gameCount}개의 근거기반 활동을 30초 안에 비교. 가이드라인·학술
+            근거·치료실 도구 현황까지 한곳에.
           </p>
           <Link
             href="/games"

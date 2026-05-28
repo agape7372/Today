@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Users, Zap } from "lucide-react";
+import { BookOpen, Users, Package, SlidersHorizontal } from "lucide-react";
 import type { SiteStats } from "@/lib/stats";
 
 export function Features({ stats }: { stats: SiteStats }) {
@@ -9,20 +9,26 @@ export function Features({ stats }: { stats: SiteStats }) {
     {
       icon: BookOpen,
       title: "근거기반",
-      desc: `Sweller·Taub·Thaut·LSVT BIG — ${stats.citationCount}편의 논문 인용으로 게임마다 학술적 뿌리.`,
+      desc: `Sweller·Taub·Thaut·Mora-Ripoll — ${stats.citationCount}편의 논문 인용으로 게임마다 학술 뿌리.`,
       accent: "from-brand-500 to-emerald-400",
     },
     {
       icon: Users,
       title: "환자 맞춤",
-      desc: `뇌졸중·SCI·파킨슨·비사용·노인 등 ${stats.targetGroupCount}가지 환자군 태그로 즉시 필터링.`,
+      desc: `${stats.targetGroupCount}개 환자군 필터 + 6각형 레이더로 재미·난이도·인지부하를 한눈에 비교.`,
       accent: "from-accent-500 to-sky-400",
     },
     {
-      icon: Zap,
-      title: "즉시 진행",
-      desc: "준비물·진행 단계·변형·안전 주의를 한 페이지에. 인쇄해서 들고 가기.",
+      icon: Package,
+      title: "치료실 도구 현황",
+      desc: "준비물을 보유 도구와 자동 매칭. '1개만 사면 N게임 가능' 구매 추천까지.",
       accent: "from-warm-500 to-amber-400",
+    },
+    {
+      icon: SlidersHorizontal,
+      title: "현장 맞춤",
+      desc: "특성·영상·게임 내용을 PIN 보호 아래 현장에서 직접 수정. 모든 화면에 즉시 반영.",
+      accent: "from-violet-500 to-fuchsia-400",
     },
   ];
 
@@ -38,12 +44,12 @@ export function Features({ stats }: { stats: SiteStats }) {
           Why 오늘 뭐하지
         </p>
         <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          치료사를 위한 한 권의 책,
-          <br className="hidden sm:block" /> 그러나 검색 가능한.
+          게임 결정 → 도구 확인 → 현장 맞춤,
+          <br className="hidden sm:block" /> 한 흐름으로.
         </h2>
       </motion.div>
 
-      <ul className="mt-12 grid gap-6 md:grid-cols-3">
+      <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((f, i) => (
           <motion.li
             key={f.title}

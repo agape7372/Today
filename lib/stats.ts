@@ -1,4 +1,5 @@
 import { getAllGames } from "./games";
+import { getAggregatedReferences } from "./references";
 import { TARGET_LABELS, TRAIT_KEYS } from "./constants";
 
 export interface SiteStats {
@@ -12,17 +13,12 @@ export interface SiteStats {
 export function getSiteStats(): SiteStats {
   const games = getAllGames();
 
-  // unique citation 카운트 — 같은 논문을 여러 게임에서 인용해도 1로 계산
-  const uniqueCitations = new Set<string>();
-  for (const g of games) {
-    for (const ref of g.references) {
-      uniqueCitations.add(ref.citation);
-    }
-  }
+  // 정규화(저자+연도) 기준 고유 논문 수 — /references 페이지와 동일 집계
+  const citationCount = getAggregatedReferences().length;
 
   return {
     gameCount: games.length,
-    citationCount: uniqueCitations.size,
+    citationCount,
     targetGroupCount: Object.keys(TARGET_LABELS).length,
     traitCount: TRAIT_KEYS.length,
   };

@@ -17,10 +17,10 @@
 |----|------|------|
 | **소개** | `/` | Framer Motion 인터랙션 랜딩 |
 | **게임 카드** | `/games` | **65개** 게임. 환자·운동·자세·인원 필터 + 특성·글자순 정렬 + 검색. URL 쿼리 동기화 |
-| **현황** | `/inventory` | 치료실 도구 30개 자동 매칭. 보유 토글 + 구매 추천 ("1개만 사면 N게임 가능") |
-| **설정** | `/settings` | PIN(SHA-256) 보호. 게임 특성 override · 영상 교체 · 테마 · 글자크기 · JSON export/import |
+| **현황** | `/inventory` | 치료실 도구 59개 자동 매칭. 보유 토글 + 구매 추천 ("1개만 사면 N게임 가능") |
+| **설정** | `/settings` | PIN(SHA-256) 보호 = 개발자 모드. 게임 특성·영상·**내용** override · 테마 · 글자크기 · JSON export/import |
 
-게임 상세(`/games/[slug]`)는 **6각형 레이더 차트**(재미·독창성·참여도·난이도·인지부하·기능수준), 메타 그리드, Instagram/YouTube 영상 임베드, 5섹션 가이드라인(준비·진행·변형·안전·평가), 학술 인용, 준비물 매칭 버튼, 인쇄 버튼을 제공한다.
+게임 상세(`/games/[slug]`)는 **6각형 레이더 차트**(재미·독창성·참여도·난이도·인지부하·기능수준), 메타 그리드, Instagram/YouTube 영상 임베드, 5섹션 가이드라인(준비·진행·변형·안전·평가), 학술 인용, 준비물 매칭 버튼, 인쇄 버튼을 제공한다. 개발자 모드(설정에서 PIN 해제)에서는 이름·요약·섹션 내용을 인라인으로 직접 수정할 수 있다. 전체 학술 인용은 [`/references`](https://today-xi.vercel.app/references)에 통합돼 있다.
 
 ## 학술 근거
 
@@ -52,7 +52,7 @@
 - **Framer Motion v12** (랜딩 인터랙션만)
 - **@next/mdx** + gray-matter + next-mdx-remote/rsc
 - **next-themes** (다크모드), lucide-react (아이콘), Pretendard (폰트)
-- 정적 SSG **76 routes** — GitHub push → Vercel 자동 배포
+- 정적 SSG **77 routes** — GitHub push → Vercel 자동 배포
 
 ## 로컬 개발
 
