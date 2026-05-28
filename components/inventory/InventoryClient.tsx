@@ -18,6 +18,10 @@ import {
 import { useInventory } from "@/lib/inventory";
 import { ToolCard } from "./ToolCard";
 import { ToolDetail } from "./ToolDetail";
+import {
+  NameSortToggle,
+  type NameSortDir,
+} from "@/components/common/NameSortToggle";
 import { cn } from "@/lib/cn";
 
 type StatusFilter = "all" | "owned" | "missing";
@@ -38,6 +42,7 @@ export function InventoryClient({ games }: InventoryClientProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [search, setSearch] = useState("");
+  const [nameSort, setNameSort] = useState<NameSortDir>(undefined);
   const [selectedId, setSelectedId] = useState<string | null>(
     selectedFromUrl ?? null,
   );
@@ -69,9 +74,9 @@ export function InventoryClient({ games }: InventoryClientProps) {
     return map;
   }, [games, tools]);
 
-  // 도구 필터링
+  // 도구 필터링 + 정렬
   const filteredTools = useMemo(() => {
-    return tools.filter((t) => {
+    const list = tools.filter((t) => {
       if (category !== "all" && t.category !== category) return false;
       if (typeFilter !== "all" && t.type !== typeFilter) return false;
       const owned = Boolean(inv[t.id]?.owned);
@@ -84,7 +89,15 @@ export function InventoryClient({ games }: InventoryClientProps) {
       }
       return true;
     });
-  }, [tools, category, statusFilter, typeFilter, search, inv]);
+
+    if (nameSort) {
+      return [...list].sort((a, b) => {
+        const cmp = a.name.localeCompare(b.name, "ko");
+        return nameSort === "asc" ? cmp : -cmp;
+      });
+    }
+    return list;
+  }, [tools, category, statusFilter, typeFilter, search, inv, nameSort]);
 
   // 구매 추천: 한 도구만 더 사면 새 게임 N개 가능 — top 3
   const purchaseRecommendations = useMemo(() => {
@@ -257,7 +270,7 @@ export function InventoryClient({ games }: InventoryClientProps) {
               ✗ 미보유
             </Chip>
           </div>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             <Chip
               active={typeFilter === "consumable"}
               onClick={() =>
@@ -276,6 +289,7 @@ export function InventoryClient({ games }: InventoryClientProps) {
             >
               영구재
             </Chip>
+            <NameSortToggle value={nameSort} onChange={setNameSort} />
           </div>
         </div>
       </div>

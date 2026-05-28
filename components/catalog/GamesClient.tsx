@@ -17,6 +17,7 @@ import { GameCard } from "./GameCard";
 import { SortBar } from "./SortBar";
 import { SearchBar } from "./SearchBar";
 import { ActiveFilters } from "./ActiveFilters";
+import { NameSortToggle } from "@/components/common/NameSortToggle";
 import { cn } from "@/lib/cn";
 
 export interface GamesClientProps {
@@ -74,29 +75,49 @@ export function GamesClient({ initialGames }: GamesClientProps) {
       <div className="sticky top-14 z-20 -mx-4 mb-5 border-b border-[var(--line)] bg-[var(--bg)]/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
         <SortBar
           active={filters.sortBy}
-          onChange={(next) => setFilters({ ...filters, sortBy: next })}
+          onChange={(next) =>
+            // 특성 정렬 활성 시 이름순 자동 해제 (상호 배타)
+            setFilters({
+              ...filters,
+              sortBy: next,
+              nameSort: next ? undefined : filters.nameSort,
+            })
+          }
         />
 
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={() =>
-              setFilters({ ...filters, favOnly: !filters.favOnly })
-            }
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors",
-              filters.favOnly
-                ? "bg-warm-300/30 text-warm-700 dark:bg-warm-500/20 dark:text-warm-300"
-                : "border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--fg-muted)] hover:text-[var(--fg)]",
-            )}
-            aria-pressed={filters.favOnly}
-          >
-            <Star
-              className={cn("h-3 w-3", filters.favOnly && "fill-current")}
-              aria-hidden
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() =>
+                setFilters({ ...filters, favOnly: !filters.favOnly })
+              }
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                filters.favOnly
+                  ? "bg-warm-300/30 text-warm-700 dark:bg-warm-500/20 dark:text-warm-300"
+                  : "border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--fg-muted)] hover:text-[var(--fg)]",
+              )}
+              aria-pressed={filters.favOnly}
+            >
+              <Star
+                className={cn("h-3 w-3", filters.favOnly && "fill-current")}
+                aria-hidden
+              />
+              즐겨찾기{favCount > 0 && ` (${favCount})`}
+            </button>
+            <NameSortToggle
+              value={filters.nameSort}
+              onChange={(next) =>
+                // 이름순 활성 시 특성 정렬 자동 해제 (상호 배타)
+                setFilters({
+                  ...filters,
+                  nameSort: next,
+                  sortBy: next ? undefined : filters.sortBy,
+                })
+              }
             />
-            즐겨찾기{favCount > 0 && ` (${favCount})`}
-          </button>
+          </div>
           <p className="text-xs text-[var(--fg-muted)]">
             {filtered.length}개
             {filtered.length === initialGames.length

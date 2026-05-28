@@ -31,6 +31,11 @@ export function ActiveFilters({ filters, onChange }: ActiveFiltersProps) {
           <Star className="h-3 w-3 fill-current" /> 즐겨찾기만
         </Chip>
       )}
+      {filters.nameSort && (
+        <Chip onRemove={() => onChange({ ...filters, nameSort: undefined })}>
+          이름순 {filters.nameSort === "asc" ? "↑" : "↓"}
+        </Chip>
+      )}
 
       {active > 1 && (
         <button

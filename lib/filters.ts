@@ -1,10 +1,13 @@
 import type { Game, TraitKey } from "./types";
 import { TRAIT_KEYS } from "./constants";
 
+export type NameSortDir = "asc" | "desc";
+
 export interface FilterState {
   search: string;
   sortBy?: TraitKey;
   favOnly?: boolean;
+  nameSort?: NameSortDir;
 }
 
 export const EMPTY_FILTERS: FilterState = {
@@ -30,7 +33,14 @@ export function applyFilters(
     });
   }
 
-  if (f.sortBy) {
+  // 이름순 정렬이 활성이면 우선 적용 (특성 정렬과 상호 배타)
+  if (f.nameSort) {
+    const dir = f.nameSort;
+    result = [...result].sort((a, b) => {
+      const cmp = a.name.localeCompare(b.name, "ko");
+      return dir === "asc" ? cmp : -cmp;
+    });
+  } else if (f.sortBy) {
     const key = f.sortBy;
     result = [...result].sort((a, b) => b.traits[key] - a.traits[key]);
   }
@@ -43,6 +53,7 @@ export function countActive(f: FilterState): number {
   if (f.search.trim()) n++;
   if (f.sortBy) n++;
   if (f.favOnly) n++;
+  if (f.nameSort) n++;
   return n;
 }
 
@@ -51,6 +62,7 @@ export function toQuery(f: FilterState): string {
   if (f.search.trim()) p.set("q", f.search.trim());
   if (f.sortBy) p.set("sort", f.sortBy);
   if (f.favOnly) p.set("fav", "1");
+  if (f.nameSort) p.set("name", f.nameSort);
   return p.toString();
 }
 
@@ -59,9 +71,13 @@ export function fromQuery(qs: URLSearchParams): FilterState {
   const sortBy = sortRaw && (TRAIT_KEYS as readonly string[]).includes(sortRaw)
     ? (sortRaw as TraitKey)
     : undefined;
+  const nameRaw = qs.get("name");
+  const nameSort =
+    nameRaw === "asc" || nameRaw === "desc" ? nameRaw : undefined;
   return {
     search: qs.get("q") ?? "",
     sortBy,
     favOnly: qs.get("fav") === "1",
+    nameSort,
   };
 }
