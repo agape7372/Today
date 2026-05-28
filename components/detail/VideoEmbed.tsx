@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Video, Search } from "lucide-react";
+import { Video, Search, ExternalLink } from "lucide-react";
 import { useVideoOverrides } from "@/lib/video-overrides";
 
 function extractYoutubeId(url: string): string | null {
@@ -15,85 +14,69 @@ function isInstagramUrl(url: string): boolean {
   return /(?:instagram\.com|instagr\.am)\//.test(url);
 }
 
-declare global {
-  interface Window {
-    instgrm?: { Embeds: { process: () => void } };
-  }
+function extractInstagramRef(
+  url: string,
+): { type: "reel" | "p"; id: string } | null {
+  const m = url.match(
+    /(?:instagram\.com|instagr\.am)\/(?:[\w.]+\/)?(reel|p)\/([\w-]+)/i,
+  );
+  if (!m) return null;
+  return { type: m[1] as "reel" | "p", id: m[2] };
 }
 
 function InstagramEmbed({ url }: { url: string }) {
-  const ref = useRef<HTMLQuoteElement>(null);
-
-  useEffect(() => {
-    const SRC = "https://www.instagram.com/embed.js";
-
-    const tryProcess = (): boolean => {
-      if (window.instgrm?.Embeds) {
-        try {
-          window.instgrm.Embeds.process();
-          return true;
-        } catch {
-          return false;
-        }
-      }
-      return false;
-    };
-
-    // 1. 스크립트가 이미 로드돼있으면 즉시 시도
-    if (tryProcess()) return;
-
-    // 2. 스크립트가 없으면 추가 + onload에서 처리
-    const existing = document.querySelector<HTMLScriptElement>(
-      `script[src="${SRC}"]`,
-    );
-    if (!existing) {
-      const script = document.createElement("script");
-      script.src = SRC;
-      script.async = true;
-      script.onload = () => tryProcess();
-      document.body.appendChild(script);
-    }
-
-    // 3. 폴링 — 스크립트 로드 + instgrm 객체 초기화 대기 (최대 5초)
-    let elapsed = 0;
-    const interval = window.setInterval(() => {
-      elapsed += 200;
-      if (tryProcess() || elapsed >= 5000) {
-        window.clearInterval(interval);
-      }
-    }, 200);
-
-    return () => window.clearInterval(interval);
-  }, [url]);
+  const ref = extractInstagramRef(url);
+  if (!ref) {
+    return <InstagramFallback url={url} />;
+  }
+  // 공식 embed iframe — embed.js 의존성 없음
+  const embedSrc = `https://www.instagram.com/${ref.type}/${ref.id}/embed/captioned/`;
 
   return (
     <div className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--line)] bg-white shadow-soft">
-      <blockquote
-        ref={ref}
-        className="instagram-media"
-        data-instgrm-permalink={url}
-        data-instgrm-version="14"
-        data-instgrm-captioned=""
-        style={{
-          background: "#FFF",
-          border: 0,
-          margin: "0 auto",
-          maxWidth: "540px",
-          minWidth: "300px",
-          padding: 0,
-          width: "100%",
-        }}
-      >
+      <iframe
+        src={embedSrc}
+        title="Instagram 영상"
+        allow="encrypted-media; clipboard-write; picture-in-picture; web-share"
+        allowFullScreen
+        loading="lazy"
+        scrolling="no"
+        className="block w-full"
+        style={{ minHeight: 720, border: 0 }}
+      />
+      {/* iframe이 X-Frame-Options에 막힐 경우 대비 fallback 링크 (no-print 제외) */}
+      <div className="border-t border-[var(--line)] bg-[var(--bg-elevated)] px-3 py-2 text-center text-[11px] text-[var(--fg-muted)]">
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block p-4 text-sm text-[var(--fg-muted)]"
+          className="inline-flex items-center gap-1 hover:text-brand-600 dark:hover:text-brand-400"
         >
-          영상 로딩 중… 클릭 시 Instagram에서 보기
+          <ExternalLink className="h-3 w-3" />
+          Instagram 원본에서 보기
         </a>
-      </blockquote>
+      </div>
     </div>
+  );
+}
+
+function InstagramFallback({ url }: { url: string }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="no-print group flex items-center gap-3 rounded-[var(--radius-card)] border border-[var(--line)] bg-gradient-to-r from-rose-50 to-amber-50 p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lifted dark:from-rose-500/10 dark:to-amber-500/10"
+    >
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 via-fuchsia-500 to-amber-500 text-white shadow-soft">
+        <Video className="h-5 w-5" />
+      </div>
+      <div className="flex-1">
+        <p className="text-sm font-medium">Instagram에서 영상 보기</p>
+        <p className="text-xs text-[var(--fg-muted)]">URL 형식이 reel/post 아님</p>
+      </div>
+      <ExternalLink className="h-4 w-4 text-[var(--fg-muted)]" />
+    </a>
   );
 }
 
