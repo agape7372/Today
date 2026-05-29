@@ -1,5 +1,10 @@
 import type { Game, TraitKey } from "./types";
-import { TRAIT_KEYS } from "./constants";
+import {
+  TRAIT_KEYS,
+  TARGET_LABELS,
+  DOMAIN_LABELS,
+  MOTOR_LABELS,
+} from "./constants";
 
 export type NameSortDir = "asc" | "desc";
 
@@ -28,7 +33,19 @@ export function applyFilters(
   if (f.search.trim()) {
     const q = f.search.trim().toLowerCase();
     result = result.filter((g) => {
-      const haystack = `${g.name} ${g.nameEn ?? ""} ${g.summary}`.toLowerCase();
+      // 이름·요약뿐 아니라 환자타입·치료영역·운동·준비물 라벨까지 검색 대상에 포함
+      // → "뇌졸중" "파킨슨" "소근육" "풍선" "집게" 같은 임상 키워드로도 적중
+      const haystack = [
+        g.name,
+        g.nameEn ?? "",
+        g.summary,
+        ...g.targetGroups.map((t) => TARGET_LABELS[t]),
+        ...g.domains.map((d) => DOMAIN_LABELS[d]),
+        ...g.motorType.map((m) => MOTOR_LABELS[m]),
+        ...g.materials,
+      ]
+        .join(" ")
+        .toLowerCase();
       return haystack.includes(q);
     });
   }

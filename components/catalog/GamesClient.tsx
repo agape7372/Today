@@ -39,12 +39,17 @@ export function GamesClient({ initialGames }: GamesClientProps) {
     return fromQuery(params);
   });
 
+  // 화면 필터링은 즉각, URL 동기화만 200ms 디바운스 — 매 키 입력마다
+  // router.replace가 터지지 않게 해 느린 태블릿에서도 입력 렉을 막는다.
   useEffect(() => {
-    const qs = toQuery(filters);
-    const next = qs ? `?${qs}` : "";
-    if (window.location.search !== next) {
-      router.replace(`/games${next}`, { scroll: false });
-    }
+    const id = setTimeout(() => {
+      const qs = toQuery(filters);
+      const next = qs ? `?${qs}` : "";
+      if (window.location.search !== next) {
+        router.replace(`/games${next}`, { scroll: false });
+      }
+    }, 200);
+    return () => clearTimeout(id);
   }, [filters, router]);
 
   const filtered = useMemo(

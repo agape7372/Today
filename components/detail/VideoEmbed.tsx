@@ -33,7 +33,7 @@ function InstagramEmbed({ url }: { url: string }) {
   const embedSrc = `https://www.instagram.com/${ref.type}/${ref.id}/embed/captioned/`;
 
   return (
-    <div className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--line)] bg-white shadow-soft">
+    <div className="no-print overflow-hidden rounded-[var(--radius-card)] border border-[var(--line)] bg-white shadow-soft">
       <iframe
         src={embedSrc}
         title="Instagram 영상"
@@ -95,7 +95,7 @@ export function VideoEmbed({ slug, url, searchQuery }: VideoEmbedProps) {
     const ytId = extractYoutubeId(effective);
     if (ytId) {
       return (
-        <div className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--line)] shadow-soft">
+        <div className="no-print overflow-hidden rounded-[var(--radius-card)] border border-[var(--line)] shadow-soft">
           <div className="aspect-video w-full bg-black">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${ytId}`}
