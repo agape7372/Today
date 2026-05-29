@@ -2,6 +2,7 @@
 
 import type { Game } from "@/lib/types";
 import { PinGate } from "./PinGate";
+import { MeetingEntry } from "./MeetingEntry";
 import { TraitEditor } from "./TraitEditor";
 import { AppearanceSection } from "./AppearanceSection";
 import { DataManager } from "./DataManager";
@@ -28,6 +29,7 @@ export function SettingsClient({ games }: SettingsClientProps) {
         </header>
 
         <div className="space-y-5">
+          <MeetingEntry />
           <TraitEditor games={games} />
           <AppearanceSection />
           <DataManager />
