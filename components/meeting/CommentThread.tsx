@@ -62,7 +62,7 @@ export function CommentThread({ comments, author, onAdd, onRemove }: Props) {
         </ul>
       )}
 
-      <div className="flex items-end gap-2">
+      <div className="flex items-stretch gap-1.5">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -72,9 +72,9 @@ export function CommentThread({ comments, author, onAdd, onRemove }: Props) {
               submit();
             }
           }}
-          rows={1}
+          rows={2}
           placeholder={`${author || "익명"} 님으로 코멘트… (⌘/Ctrl+Enter)`}
-          className="min-h-[2.4rem] flex-1 resize-y rounded-[var(--radius-card-inner)] border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
+          className="min-h-[3.5rem] flex-1 resize-y rounded-[var(--radius-card-inner)] border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
         />
         <button
           type="button"
@@ -82,7 +82,7 @@ export function CommentThread({ comments, author, onAdd, onRemove }: Props) {
           disabled={!text.trim()}
           aria-label="코멘트 등록"
           className={cn(
-            "inline-flex h-9 shrink-0 items-center gap-1 rounded-full px-3 text-sm font-medium transition-colors",
+            "inline-flex w-10 shrink-0 flex-col items-center justify-center gap-0.5 rounded-[var(--radius-card-inner)] text-[10px] font-medium transition-colors",
             text.trim()
               ? "bg-brand-500 text-white hover:bg-brand-600"
               : "border border-[var(--line)] text-[var(--fg-muted)]",
