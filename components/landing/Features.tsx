@@ -15,7 +15,7 @@ export function Features({ stats }: { stats: SiteStats }) {
     {
       icon: Users,
       title: "환자 맞춤",
-      desc: `뇌졸중·SCI·파킨슨·비사용·노인 등 ${stats.targetGroupCount}가지 환자군 태그로 즉시 필터링.`,
+      desc: `뇌졸중·SCI·파킨슨·비사용·노인 등 ${stats.targetGroupCount}가지 환자군 태그로 게임마다 적용 대상을 표시.`,
       accent: "from-accent-500 to-sky-400",
     },
     {
