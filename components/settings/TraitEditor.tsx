@@ -72,7 +72,7 @@ export function TraitEditor({ games }: TraitEditorProps) {
 
       <div className="grid gap-4 sm:grid-cols-[200px_1fr]">
         {/* 게임 리스트 */}
-        <div>
+        <div className="min-w-0">
           <label className="mb-1.5 flex h-9 items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--bg)] px-3 focus-within:border-brand-500">
             <Search className="h-3.5 w-3.5 text-[var(--fg-muted)]" />
             <input
@@ -102,7 +102,7 @@ export function TraitEditor({ games }: TraitEditorProps) {
                           : "hover:bg-[var(--line)]/50",
                       )}
                     >
-                      <span className="truncate">{g.name}</span>
+                      <span className="min-w-0 truncate">{g.name}</span>
                       <span className="flex shrink-0 items-center gap-0.5">
                         {traitCount > 0 && (
                           <span className="rounded-full bg-warm-500 px-1.5 py-0.5 text-[9px] font-bold text-white">
@@ -127,9 +127,9 @@ export function TraitEditor({ games }: TraitEditorProps) {
         </div>
 
         {/* 우측: 슬라이더 + 영상 */}
-        <div>
+        <div className="min-w-0">
           <div className="mb-3 flex items-center justify-between gap-2">
-            <h3 className="text-base font-bold tracking-tight">
+            <h3 className="min-w-0 truncate text-base font-bold tracking-tight">
               {selected.name}
             </h3>
             {hasTraitOverride && (
