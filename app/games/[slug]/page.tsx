@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getAllSlugs, getGameBySlug } from "@/lib/games";
+import { getAllSlugs, getGameBySlug, getRelatedGames } from "@/lib/games";
 import { GameHeader } from "@/components/detail/GameHeader";
 import { InlineMeta } from "@/components/detail/InlineMeta";
 import { TraitsBreakdown } from "@/components/detail/TraitsBreakdown";
@@ -9,6 +9,7 @@ import { MaterialsSafety } from "@/components/detail/MaterialsSafety";
 import { MaterialChips } from "@/components/detail/MaterialChips";
 import { EditableGuideline } from "@/components/detail/EditableGuideline";
 import { ReferenceList } from "@/components/detail/ReferenceList";
+import { RelatedGames } from "@/components/detail/RelatedGames";
 import { PrintButton } from "@/components/detail/PrintButton";
 
 export function generateStaticParams() {
@@ -42,6 +43,8 @@ export default async function GameDetailPage({
   const game = getGameBySlug(slug);
   if (!game) notFound();
 
+  const related = getRelatedGames(game, 4);
+
   return (
     <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 space-y-8">
       <GameHeader game={game} />
@@ -71,6 +74,8 @@ export default async function GameDetailPage({
       </section>
 
       <ReferenceList references={game.references} />
+
+      <RelatedGames games={related} />
 
       <div className="border-t border-[var(--line)] pt-6 text-center text-xs text-[var(--fg-muted)] no-print">
         근거기반 참여형 재활 게임 · 오늘 뭐하지
