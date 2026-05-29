@@ -31,11 +31,11 @@ export function FavoriteButton({
       aria-label={isFav ? "즐겨찾기 해제" : "즐겨찾기 추가"}
       aria-pressed={isFav}
       className={cn(
-        "inline-flex items-center justify-center rounded-full transition-all",
+        "inline-flex items-center justify-center rounded-full transition-all hover:bg-[var(--line)]",
         wh,
         isFav
-          ? "bg-warm-300/30 text-warm-600 hover:bg-warm-300/50 dark:bg-warm-500/20 dark:text-warm-300"
-          : "bg-transparent text-[var(--fg-muted)] hover:bg-[var(--line)] hover:text-warm-600",
+          ? "text-warm-500 dark:text-warm-300"
+          : "text-[var(--fg-muted)] hover:text-warm-600",
         className,
       )}
     >
