@@ -12,6 +12,7 @@ import {
   type ItemStatus,
 } from "@/lib/meeting";
 import { MeetingToolbar } from "./MeetingToolbar";
+import { MeetingActions } from "./MeetingActions";
 import { AgendaSection } from "./AgendaSection";
 
 type StatusFilter = "all" | ItemStatus;
@@ -53,15 +54,6 @@ function MeetingBoard() {
     );
   }, [m.items, search, statusFilter]);
 
-  const totalComments = useMemo(
-    () => m.items.reduce((n, it) => n + it.comments.length, 0),
-    [m.items],
-  );
-  const doneCount = useMemo(
-    () => m.items.filter((it) => it.status === "done").length,
-    [m.items],
-  );
-
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
       {/* 헤더 */}
@@ -95,50 +87,16 @@ function MeetingBoard() {
           안건별로 의견·코멘트를 남기고, 회의록은 Markdown으로 내보내 공유. 모든
           내용은 이 기기에 저장됩니다.
         </p>
-
-        {/* 요약 + 섹션 점프 */}
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[var(--fg-muted)]">
-          <span>
-            안건 <strong className="font-mono text-[var(--fg)]">{m.items.length}</strong>
-          </span>
-          <span>
-            완료 <strong className="font-mono text-[var(--fg)]">{doneCount}</strong>
-          </span>
-          <span>
-            코멘트 <strong className="font-mono text-[var(--fg)]">{totalComments}</strong>
-          </span>
-        </div>
-        <nav className="mt-3 flex flex-wrap gap-1.5" aria-label="섹션 바로가기">
-          {SECTIONS.map((s) => (
-            <a
-              key={s.id}
-              href={`#section-${s.id}`}
-              className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--bg-elevated)] px-2.5 py-1 text-xs font-medium text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)]"
-            >
-              <s.icon className="h-3.5 w-3.5" />
-              {s.label}
-            </a>
-          ))}
-        </nav>
       </header>
 
       <div className="mb-5">
         <MeetingToolbar
-          items={m.items}
           author={author}
           onAuthorChange={setAuthor}
           search={search}
           onSearchChange={setSearch}
           statusFilter={statusFilter}
           onStatusFilterChange={setStatusFilter}
-          onImport={(incoming) => {
-            // 가져온 항목을 기존과 병합 (id 중복은 가져온 쪽 우선)
-            const map = new Map<string, AgendaItem>();
-            for (const it of m.items) map.set(it.id, it);
-            for (const it of incoming) map.set(it.id, it);
-            m.replaceAll(Array.from(map.values()));
-          }}
-          onClearAll={m.clearAll}
         />
       </div>
 
@@ -167,7 +125,22 @@ function MeetingBoard() {
         ))}
       </div>
 
-      <p className="no-print mt-8 flex items-center justify-center gap-1.5 text-center text-[11px] leading-relaxed text-[var(--fg-muted)]">
+      {/* 내보내기·백업 액션 — 페이지 맨 밑 */}
+      <div className="mt-8">
+        <MeetingActions
+          items={m.items}
+          onImport={(incoming) => {
+            // 가져온 항목을 기존과 병합 (id 중복은 가져온 쪽 우선)
+            const map = new Map<string, AgendaItem>();
+            for (const it of m.items) map.set(it.id, it);
+            for (const it of incoming) map.set(it.id, it);
+            m.replaceAll(Array.from(map.values()));
+          }}
+          onClearAll={m.clearAll}
+        />
+      </div>
+
+      <p className="no-print mt-5 flex items-center justify-center gap-1.5 text-center text-[11px] leading-relaxed text-[var(--fg-muted)]">
         <HardDrive className="h-3.5 w-3.5 shrink-0" aria-hidden />
         <span>
           데이터는 이 브라우저(localStorage)에만 저장됩니다. 다른 기기와
