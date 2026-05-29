@@ -73,7 +73,7 @@ export function CommentThread({ comments, author, onAdd, onRemove }: Props) {
             }
           }}
           rows={2}
-          placeholder="코멘트 입력"
+          placeholder="..."
           className="min-h-[3.5rem] flex-1 resize-y rounded-[var(--radius-card-inner)] border border-[var(--line)] bg-[var(--bg)] px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30"
         />
         <button
