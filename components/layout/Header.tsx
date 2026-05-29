@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/cn";
 
 interface NavItem {
@@ -72,7 +71,6 @@ export function Header() {
               </Link>
             );
           })}
-          <ThemeToggle className="ml-0.5 sm:ml-1" />
         </nav>
       </div>
     </header>
