@@ -210,7 +210,7 @@ export const TOOLS_MASTER: ToolDef[] = [
     priceMin: 3000,
     priceMax: 10000,
     aliases: ["소프트볼", "부드러운 공", "축구공", "농구공", "볼풀공"],
-    description: "안전한 던지기·차기. 어르신·아동 모두.",
+    description: "안전한 던지기·차기. 어르신·성인 모두.",
   },
   {
     id: "bowling-pin",
@@ -358,7 +358,7 @@ export const TOOLS_MASTER: ToolDef[] = [
     priceMin: 10000,
     priceMax: 30000,
     aliases: ["비닐터널", "터널"],
-    description: "유아·소집단 운동에 인기. 사용 빈도에 따라 1-2년 교체.",
+    description: "소집단 운동에 인기. 사용 빈도에 따라 1-2년 교체.",
   },
   {
     id: "cotton-ball",
@@ -593,7 +593,7 @@ export const TOOLS_MASTER: ToolDef[] = [
     priceMin: 10000,
     priceMax: 30000,
     aliases: ["라켓", "셔틀콕"],
-    description: "탁구·배드민턴 라켓. 어린이용 가벼운 것 권장.",
+    description: "탁구·배드민턴 라켓. 가벼운 것 권장.",
   },
   {
     id: "paper-pen",
