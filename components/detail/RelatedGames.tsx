@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Game } from "@/lib/types";
-import { MOTOR_LABELS, TARGET_LABELS } from "@/lib/constants";
+import { MOTOR_LABELS } from "@/lib/constants";
 
 export interface RelatedGamesProps {
   games: Game[];
@@ -47,14 +47,6 @@ export function RelatedGames({ games }: RelatedGamesProps) {
                   className="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-300"
                 >
                   {MOTOR_LABELS[m]}
-                </span>
-              ))}
-              {g.targetGroups.slice(0, 1).map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-[var(--line)] px-2 py-0.5 text-[var(--fg-muted)]"
-                >
-                  {TARGET_LABELS[t]}
                 </span>
               ))}
               <span className="ml-auto text-[var(--fg-muted)]">
