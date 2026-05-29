@@ -79,11 +79,13 @@ export function AgendaSection({
       {/* 헤더 */}
       <div className={cn("border-l-[3px] pl-3", TONE_BORDER[meta.tone])}>
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="text-lg font-bold tracking-tight sm:text-xl">
-            <span className={cn("mr-1 font-mono text-sm", TONE_TEXT[meta.tone])}>
+          <h2 className="flex items-center gap-1.5 text-lg font-bold tracking-tight sm:text-xl">
+            <span className={cn("font-mono text-sm", TONE_TEXT[meta.tone])}>
               {String(meta.index).padStart(2, "0")}
             </span>
-            <span aria-hidden className="mr-1">{meta.emoji}</span>
+            <meta.icon
+              className={cn("h-[1.1em] w-[1.1em] shrink-0", TONE_TEXT[meta.tone])}
+            />
             {meta.label}
           </h2>
           <span className="shrink-0 font-mono text-xs text-[var(--fg-muted)]">
