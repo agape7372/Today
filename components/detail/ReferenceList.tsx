@@ -5,53 +5,41 @@ export function ReferenceList({ references }: { references: Reference[] }) {
   if (!references || references.length === 0) return null;
 
   return (
-    <section className="rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--bg-elevated)] p-6 shadow-soft">
+    <section className="rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--bg-elevated)] p-5 shadow-soft">
       <div className="flex items-center gap-2">
         <BookOpen className="h-4 w-4 text-accent-600 dark:text-accent-300" />
         <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--fg-muted)]">
           학술 근거
         </h2>
       </div>
-      <ol className="mt-4 space-y-4">
-        {references.map((ref, i) => (
-          <li
-            key={i}
-            className="rounded-[var(--radius-card-inner)] border-l-2 border-accent-500 bg-accent-50/50 p-3 dark:bg-accent-500/5"
-          >
-            <p className="text-sm font-medium leading-relaxed">
-              [{i + 1}] {ref.citation}
-            </p>
-            <p className="mt-1 text-xs text-[var(--fg-muted)] leading-relaxed">
-              {ref.relevance}
-            </p>
-            {(ref.doi || ref.url) && (
-              <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                {ref.doi && (
+      <ol className="mt-3 space-y-2.5">
+        {references.map((ref, i) => {
+          const href = ref.doi ? `https://doi.org/${ref.doi}` : ref.url;
+          const label = ref.doi ? `DOI: ${ref.doi}` : "원문 링크";
+          return (
+            <li key={i} className="text-sm leading-snug">
+              <p className="font-medium">
+                <span className="text-[var(--fg-muted)]">[{i + 1}]</span>{" "}
+                {ref.citation}
+                {href && (
                   <a
-                    href={`https://doi.org/${ref.doi}`}
+                    href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-accent-600 hover:underline dark:text-accent-300"
+                    title={label}
+                    aria-label={label}
+                    className="ml-1 inline-flex translate-y-0.5 text-accent-600 hover:text-accent-700 dark:text-accent-300"
                   >
-                    DOI: {ref.doi}
-                    <ExternalLink className="h-3 w-3" />
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden />
                   </a>
                 )}
-                {ref.url && !ref.doi && (
-                  <a
-                    href={ref.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-accent-600 hover:underline dark:text-accent-300"
-                  >
-                    원문 링크
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
-            )}
-          </li>
-        ))}
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--fg-muted)]">
+                {ref.relevance}
+              </p>
+            </li>
+          );
+        })}
       </ol>
     </section>
   );
