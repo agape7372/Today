@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SessionTray } from "@/components/session/SessionTray";
+import { getGamesLite } from "@/lib/games";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -57,6 +59,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1 overflow-x-hidden">{children}</main>
           <Footer />
+          <SessionTray games={getGamesLite()} />
         </ThemeProvider>
       </body>
     </html>
