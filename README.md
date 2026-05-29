@@ -17,7 +17,7 @@
 |----|------|------|
 | **소개** | `/` | Framer Motion 인터랙션 랜딩 |
 | **게임 카드** | `/games` | **65개** 게임. 통합 검색(이름·환자타입·치료영역·준비물) + 특성·글자순 정렬 + 즐겨찾기. URL 쿼리 동기화 |
-| **현황** | `/inventory` | 치료실 도구 59개 자동 매칭. 보유 토글 + 구매 추천 ("1개만 사면 N게임 가능") |
+| **현황** | `/inventory` | 치료실 도구 68개 자동 매칭. 보유 토글 + 구매 추천 ("1개만 사면 N게임 가능") |
 | **설정** | `/settings` | PIN(SHA-256) 보호 = 개발자 모드. 게임 특성·영상·**내용** override · 테마 · 글자크기 · JSON export/import |
 
 게임 상세(`/games/[slug]`)는 **6각형 레이더 차트**(재미·독창성·참여도·난이도·인지부하·기능수준), 메타 그리드, Instagram/YouTube 영상 임베드, 5섹션 가이드라인(준비·진행·변형·안전·평가), 학술 인용, 준비물 매칭 버튼, 인쇄 버튼을 제공한다. 개발자 모드(설정에서 PIN 해제)에서는 이름·요약·섹션 내용을 인라인으로 직접 수정할 수 있다. 전체 학술 인용은 [`/references`](https://today-xi.vercel.app/references)에 통합돼 있다.
@@ -40,7 +40,7 @@
 게임 = (메타) + (4차원 분류) + (6특성 점수) + (학술 근거). 콘텐츠는 `content/games/*.mdx` (frontmatter + 본문)가 single source of truth.
 
 **4계층 데이터 흐름**:
-- **L1 정적 코드** — 게임 MDX, `lib/tools-master.ts` 도구 30개
+- **L1 정적 코드** — 게임 MDX, `lib/tools-master.ts` 도구 68개
 - **L2 빌드 자동 계산** — `getToolsForGame()` alias 매칭, `lib/stats.ts` 동적 카운트
 - **L3 localStorage** — 인벤토리·특성 override·영상 override·즐겨찾기·PIN·글자크기 (`today-*-v1` 키)
 - **L4 수동 동기화** — JSON export/import (기기·치료사 간 공유)

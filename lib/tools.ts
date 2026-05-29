@@ -107,6 +107,11 @@ export const AMBIENT_HINTS = [
   "필요 시",
   "점수 영역",
   "골 표시",
+  "벽",
+  "유리창",
+  "던질 표면",
+  "보조 요원",
+  "진행 보조",
 ];
 
 export function isAmbientMaterial(material: string): boolean {
