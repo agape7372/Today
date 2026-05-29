@@ -26,13 +26,13 @@ export function AppearanceSection() {
   ];
 
   return (
-    <section className="rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--bg-elevated)] p-5 shadow-soft sm:p-6">
+    <section className="rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--bg-elevated)] p-4 shadow-soft sm:p-5">
       <p className="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">
         Appearance
       </p>
       <h2 className="mt-0.5 text-lg font-bold">표시</h2>
 
-      <div className="mt-5 grid gap-5 sm:grid-cols-2">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {/* 테마 */}
         <div>
           <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--fg-muted)]">
@@ -48,7 +48,7 @@ export function AppearanceSection() {
                   type="button"
                   onClick={() => setTheme(opt.value)}
                   className={cn(
-                    "flex flex-1 flex-col items-center gap-1.5 rounded-[var(--radius-card-inner)] border px-3 py-3 transition-colors",
+                    "flex flex-1 items-center justify-center gap-1.5 rounded-[var(--radius-card-inner)] border px-3 py-2 transition-colors",
                     active
                       ? "border-brand-500 bg-brand-50 dark:bg-brand-500/15"
                       : "border-[var(--line)] bg-[var(--bg)] hover:bg-[var(--line)]/30",
@@ -91,7 +91,7 @@ export function AppearanceSection() {
                   type="button"
                   onClick={() => setFontScale(opt.value)}
                   className={cn(
-                    "flex flex-1 flex-col items-center gap-1.5 rounded-[var(--radius-card-inner)] border px-3 py-3 transition-colors",
+                    "flex flex-1 items-center justify-center gap-1.5 rounded-[var(--radius-card-inner)] border px-3 py-2 transition-colors",
                     active
                       ? "border-brand-500 bg-brand-50 dark:bg-brand-500/15"
                       : "border-[var(--line)] bg-[var(--bg)] hover:bg-[var(--line)]/30",
