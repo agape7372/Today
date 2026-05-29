@@ -11,7 +11,6 @@ import {
   Trash2,
   Plus,
   Clock,
-  Users,
   Sparkles,
 } from "lucide-react";
 import type { GameLite } from "@/lib/types";
@@ -22,15 +21,6 @@ import { cn } from "@/lib/cn";
 export interface SessionTrayProps {
   games: GameLite[];
 }
-
-const TONE: Record<string, string> = {
-  brand:
-    "bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300",
-  sky: "bg-accent-50 text-accent-700 dark:bg-accent-500/15 dark:text-accent-300",
-  amber:
-    "bg-warm-300/30 text-warm-700 dark:bg-warm-500/20 dark:text-warm-300",
-  rose: "bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300",
-};
 
 export function SessionTray({ games }: SessionTrayProps) {
   const { slugs, remove, move, reorder, clear } = useSession();
@@ -50,30 +40,9 @@ export function SessionTray({ games }: SessionTrayProps) {
 
   const summary = useMemo(() => {
     if (items.length === 0) return null;
-    const totalMin = items.reduce((a, g) => a + g.durationMin, 0);
-    const totalMax = items.reduce((a, g) => a + g.durationMax, 0);
-    const typical = Math.round(
-      items.reduce((a, g) => a + (g.durationMin + g.durationMax) / 2, 0),
-    );
-    let fit = { label: "30분 한 타임 적정", tone: "brand" };
-    if (typical < 12) fit = { label: "여유 — 더 담아도 됨", tone: "sky" };
-    else if (typical <= 30) fit = { label: "30분 한 타임 적정", tone: "brand" };
-    else if (typical <= 40)
-      fit = { label: "빠듯 — 마무리 시간 고려", tone: "amber" };
-    else fit = { label: "초과 — 게임 빼기", tone: "rose" };
-
-    const pMin = Math.max(...items.map((g) => g.participants.min));
-    const pMax = Math.min(...items.map((g) => g.participants.max));
-    const materials = new Set(items.flatMap((g) => g.materials)).size;
     return {
-      totalMin,
-      totalMax,
-      typical,
-      fit,
-      pMin,
-      pMax,
-      pOk: pMin <= pMax,
-      materials,
+      totalMin: items.reduce((a, g) => a + g.durationMin, 0),
+      totalMax: items.reduce((a, g) => a + g.durationMax, 0),
     };
   }, [items]);
 
@@ -130,28 +99,6 @@ export function SessionTray({ games }: SessionTrayProps) {
                 <X className="h-4 w-4" aria-hidden />
               </button>
             </div>
-          </div>
-
-          {/* 요약 바 */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-[var(--line)] bg-[var(--bg)] px-4 py-2.5 text-xs">
-            <span
-              className={cn(
-                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-semibold",
-                TONE[summary.fit.tone],
-              )}
-            >
-              <Clock className="h-3 w-3" aria-hidden />
-              {summary.totalMin}–{summary.totalMax}분 · {summary.fit.label}
-            </span>
-            <span className="inline-flex items-center gap-1 text-[var(--fg-muted)]">
-              <Users className="h-3 w-3" aria-hidden />
-              {summary.pOk
-                ? `공통 ${summary.pMin}–${summary.pMax}명`
-                : "공통 인원 없음 (개별 조정)"}
-            </span>
-            <span className="text-[var(--fg-muted)]">
-              준비물 {summary.materials}항목
-            </span>
           </div>
 
           {/* 게임 목록 (드래그 + 위/아래 재정렬) */}
