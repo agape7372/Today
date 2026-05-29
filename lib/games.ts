@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import type { Game } from "./types";
+import type { Game, GameLite } from "./types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "games");
 
@@ -38,6 +38,20 @@ export function getGameBySlug(slug: string): Game | undefined {
 
 export function getAllSlugs(): string[] {
   return getAllGames().map((g) => g.slug);
+}
+
+// 세션 트레이(클라이언트)용 경량 투영 — 레이아웃에서 빌드타임에 1회 생성해 전역 전달.
+export function getGamesLite(): GameLite[] {
+  return getAllGames().map((g) => ({
+    slug: g.slug,
+    name: g.name,
+    durationMin: g.durationMin,
+    durationMax: g.durationMax,
+    participants: g.participants,
+    motorType: g.motorType,
+    targetGroups: g.targetGroups,
+    materials: g.materials,
+  }));
 }
 
 // 준비물 문자열 → 의미 토큰 Set (재료 유사도 비교용).

@@ -4,6 +4,7 @@ import type { Game, TraitKey } from "@/lib/types";
 import { TRAIT_LABELS } from "@/lib/constants";
 import { StrengthBadges } from "./StrengthBadges";
 import { FavoriteButton } from "./FavoriteButton";
+import { SessionButton } from "@/components/session/SessionButton";
 
 export interface GameCardProps {
   game: Game;
@@ -18,7 +19,7 @@ export function GameCard({ game, highlightTrait }: GameCardProps) {
         className="block h-full rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--bg-elevated)] p-5 shadow-soft transition-all hover:-translate-y-1 hover:shadow-lifted focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:outline-none"
       >
         {/* 제목 — 가장 큰 시각 요소 (위계 1순위) */}
-        <h3 className="pr-10 text-xl font-bold tracking-tight leading-tight">
+        <h3 className="pr-[4.5rem] text-xl font-bold tracking-tight leading-tight">
           {game.name}
         </h3>
 
@@ -54,12 +55,11 @@ export function GameCard({ game, highlightTrait }: GameCardProps) {
         </div>
       </Link>
 
-      {/* 즐겨찾기 — 카드 우상단 절대 배치 (Link 외부, 별도 클릭 영역) */}
-      <FavoriteButton
-        slug={game.slug}
-        size="sm"
-        className="absolute right-3 top-3"
-      />
+      {/* 담기 + 즐겨찾기 — 카드 우상단 절대 배치 (Link 외부, 별도 클릭 영역) */}
+      <div className="absolute right-3 top-3 flex items-center gap-1">
+        <SessionButton slug={game.slug} size="sm" />
+        <FavoriteButton slug={game.slug} size="sm" />
+      </div>
     </div>
   );
 }

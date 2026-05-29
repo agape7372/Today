@@ -52,3 +52,15 @@ export interface Game {
 }
 
 export type TraitKey = keyof GameTraits;
+
+// 클라이언트(세션 트레이)에 넘기는 경량 게임 투영 — 본문·인용 등 무거운 필드 제외.
+export interface GameLite {
+  slug: string;
+  name: string;
+  durationMin: number;
+  durationMax: number;
+  participants: { min: number; max: number };
+  motorType: MotorType[];
+  targetGroups: TargetGroup[];
+  materials: string[];
+}

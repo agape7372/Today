@@ -6,6 +6,8 @@ import type { Game } from "@/lib/types";
 import { usePinState } from "@/lib/pin";
 import { useContentOverrides } from "@/lib/content-overrides";
 import { EditableText } from "@/components/common/EditableText";
+import { SessionButton } from "@/components/session/SessionButton";
+import { FavoriteButton } from "@/components/catalog/FavoriteButton";
 
 export function GameHeader({ game }: { game: Game }) {
   const { unlocked } = usePinState();
@@ -16,13 +18,19 @@ export function GameHeader({ game }: { game: Game }) {
 
   return (
     <header>
-      <Link
-        href="/games"
-        className="inline-flex items-center gap-1 text-sm text-[var(--fg-muted)] hover:text-brand-600 dark:hover:text-brand-400 no-print"
-      >
-        <ChevronLeft className="h-4 w-4" />
-        카탈로그로 돌아가기
-      </Link>
+      <div className="flex items-center justify-between gap-3 no-print">
+        <Link
+          href="/games"
+          className="inline-flex items-center gap-1 text-sm text-[var(--fg-muted)] hover:text-brand-600 dark:hover:text-brand-400"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          카탈로그로 돌아가기
+        </Link>
+        <div className="flex items-center gap-2">
+          <SessionButton slug={game.slug} withLabel />
+          <FavoriteButton slug={game.slug} size="md" />
+        </div>
+      </div>
 
       <div className="mt-4">
         <EditableText
