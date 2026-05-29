@@ -10,7 +10,6 @@ import {
   ChevronDown,
   Trash2,
   Plus,
-  Clock,
   Sparkles,
 } from "lucide-react";
 import type { GameLite } from "@/lib/types";
@@ -38,26 +37,18 @@ export function SessionTray({ games }: SessionTrayProps) {
     [slugs, bySlug],
   );
 
-  const summary = useMemo(() => {
-    if (items.length === 0) return null;
-    return {
-      totalMin: items.reduce((a, g) => a + g.durationMin, 0),
-      totalMax: items.reduce((a, g) => a + g.durationMax, 0),
-    };
-  }, [items]);
-
   const recommendations = useMemo(
     () => recommendForSession(slugs, games, 3),
     [slugs, games],
   );
 
   // 세션이 비어 있으면 트레이 자체를 숨김 (담는 순간 등장)
-  if (items.length === 0 || !summary) return null;
+  if (items.length === 0) return null;
 
   return (
     <div className="no-print fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2">
       {!open ? (
-        // ── 접힌 상태: 개수 + 합계 시간 알약 ──
+        // ── 접힌 상태: 개수 알약 ──
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -65,11 +56,6 @@ export function SessionTray({ games }: SessionTrayProps) {
         >
           <Layers className="h-4 w-4" aria-hidden />
           오늘 세션 {items.length}개
-          <span className="opacity-80">·</span>
-          <span className="inline-flex items-center gap-1 font-medium opacity-90">
-            <Clock className="h-3.5 w-3.5" aria-hidden />
-            {summary.totalMin}–{summary.totalMax}분
-          </span>
           <ChevronUp className="h-4 w-4 opacity-80" aria-hidden />
         </button>
       ) : (
