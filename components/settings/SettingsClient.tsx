@@ -4,7 +4,6 @@ import type { Game } from "@/lib/types";
 import { PinGate } from "./PinGate";
 import { MeetingEntry } from "./MeetingEntry";
 import { TraitEditor } from "./TraitEditor";
-import { AppearanceSection } from "./AppearanceSection";
 import { DataManager } from "./DataManager";
 import { PinSection } from "./PinSection";
 
@@ -24,14 +23,13 @@ export function SettingsClient({ games }: SettingsClientProps) {
             설정 (관리자 모드)
           </h1>
           <p className="mt-2 text-sm text-[var(--fg-muted)]">
-            게임 특성·표시 옵션·데이터 백업·PIN 관리.
+            게임 특성·데이터 백업·PIN 관리.
           </p>
         </header>
 
         <div className="space-y-5">
           <MeetingEntry />
           <TraitEditor games={games} />
-          <AppearanceSection />
           <DataManager />
           <PinSection />
         </div>
