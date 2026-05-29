@@ -1,6 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ComponentType } from "react";
+import {
+  Target,
+  AlertTriangle,
+  Rocket,
+  Lightbulb,
+  Gamepad2,
+} from "lucide-react";
+
+type SectionIcon = ComponentType<{ className?: string }>;
 
 // ─────────────────────────────────────────────────────────────
 // 회의 보드 데이터 레이어
@@ -56,7 +65,7 @@ export interface SectionMeta {
   id: SectionId;
   index: number;
   label: string;
-  emoji: string;
+  icon: SectionIcon;
   hint: string;
   tone: "brand" | "rose" | "accent" | "warm" | "violet";
   placeholder: string;
@@ -69,7 +78,7 @@ export const SECTIONS: readonly SectionMeta[] = [
     id: "expected",
     index: 1,
     label: "기대 효과",
-    emoji: "🎯",
+    icon: Target,
     hint: "이 도구로 무엇이 나아지는가",
     tone: "brand",
     placeholder: "기대하는 효과를 한 줄로",
@@ -78,7 +87,7 @@ export const SECTIONS: readonly SectionMeta[] = [
     id: "problems",
     index: 2,
     label: "문제점·어려움 요소",
-    emoji: "⚠️",
+    icon: AlertTriangle,
     hint: "막히는 지점, 리스크, 우려",
     tone: "rose",
     placeholder: "문제점이나 어려움을 한 줄로",
@@ -87,7 +96,7 @@ export const SECTIONS: readonly SectionMeta[] = [
     id: "activation",
     index: 3,
     label: "활성화 방안",
-    emoji: "🚀",
+    icon: Rocket,
     hint: "더 많이·더 잘 쓰이게 하려면",
     tone: "accent",
     placeholder: "활성화 아이디어를 한 줄로",
@@ -96,7 +105,7 @@ export const SECTIONS: readonly SectionMeta[] = [
     id: "ideas",
     index: 4,
     label: "프리 아이디어 존",
-    emoji: "💡",
+    icon: Lightbulb,
     hint: "형식 없는 자유 발상",
     tone: "warm",
     placeholder: "떠오르는 아이디어를 자유롭게",
@@ -105,7 +114,7 @@ export const SECTIONS: readonly SectionMeta[] = [
     id: "game-requests",
     index: 5,
     label: "이 게임 추가해주세요",
-    emoji: "🎮",
+    icon: Gamepad2,
     hint: "참고 링크를 남기면 개발자가 새 게임으로 제작",
     tone: "violet",
     placeholder: "추가하고 싶은 게임 이름",
@@ -490,7 +499,7 @@ export function toMarkdown(items: AgendaItem[]): string {
 
   for (const sec of SECTIONS) {
     const secItems = sortItems(items.filter((it) => it.section === sec.id));
-    lines.push(`## ${sec.index}. ${sec.emoji} ${sec.label}`);
+    lines.push(`## ${sec.index}. ${sec.label}`);
     if (secItems.length === 0) {
       lines.push("");
       lines.push("_아직 안건 없음_");
@@ -499,8 +508,8 @@ export function toMarkdown(items: AgendaItem[]): string {
     }
     lines.push("");
     for (const it of secItems) {
-      const pin = it.pinned ? "📌 " : "";
-      const votes = it.votes.length > 0 ? ` (👍 ${it.votes.length})` : "";
+      const pin = it.pinned ? "[고정] " : "";
+      const votes = it.votes.length > 0 ? ` (공감 ${it.votes.length})` : "";
       lines.push(`### ${pin}[${statusLabel(sec.id, it.status)}] ${it.title}${votes}`);
       if (it.body) {
         lines.push("");
@@ -508,14 +517,14 @@ export function toMarkdown(items: AgendaItem[]): string {
       }
       if (it.link) {
         lines.push("");
-        lines.push(`🔗 ${it.link}`);
+        lines.push(`링크: ${it.link}`);
       }
       lines.push("");
       lines.push(`<sub>작성: ${it.author} · ${fmtDate(it.createdAt)}</sub>`);
       if (it.comments.length > 0) {
         lines.push("");
         for (const c of it.comments) {
-          lines.push(`- 💬 **${c.author}**: ${c.text} <sub>(${fmtDate(c.createdAt)})</sub>`);
+          lines.push(`- **${c.author}**: ${c.text} <sub>(${fmtDate(c.createdAt)})</sub>`);
         }
       }
       lines.push("");

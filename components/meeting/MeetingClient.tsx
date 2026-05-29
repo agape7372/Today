@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Settings as SettingsIcon, Users } from "lucide-react";
+import { ArrowLeft, Settings as SettingsIcon, Users, HardDrive } from "lucide-react";
 import { PinGate } from "@/components/settings/PinGate";
 import {
   useMeeting,
@@ -115,7 +115,7 @@ function MeetingBoard() {
               href={`#section-${s.id}`}
               className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--bg-elevated)] px-2.5 py-1 text-xs font-medium text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)]"
             >
-              <span aria-hidden>{s.emoji}</span>
+              <s.icon className="h-3.5 w-3.5" />
               {s.label}
             </a>
           ))}
@@ -167,10 +167,13 @@ function MeetingBoard() {
         ))}
       </div>
 
-      <p className="no-print mt-8 text-center text-[11px] leading-relaxed text-[var(--fg-muted)]">
-        💾 데이터는 이 브라우저(localStorage)에만 저장됩니다. 다른 기기와
-        공유하려면 <strong>JSON 내보내기/가져오기</strong>를, 회의록 배포는{" "}
-        <strong>MD 복사/저장</strong>을 사용하세요.
+      <p className="no-print mt-8 flex items-center justify-center gap-1.5 text-center text-[11px] leading-relaxed text-[var(--fg-muted)]">
+        <HardDrive className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        <span>
+          데이터는 이 브라우저(localStorage)에만 저장됩니다. 다른 기기와
+          공유하려면 <strong>JSON 내보내기/가져오기</strong>를, 회의록 배포는{" "}
+          <strong>MD 복사/저장</strong>을 사용하세요.
+        </span>
       </p>
     </div>
   );
