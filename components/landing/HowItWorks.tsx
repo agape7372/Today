@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Filter, FileSearch, PlayCircle } from "lucide-react";
+import { Filter, FileSearch, Package, PlayCircle } from "lucide-react";
 
 const STEPS = [
   {
@@ -18,9 +18,15 @@ const STEPS = [
   },
   {
     n: "03",
+    icon: Package,
+    title: "준비물 확인",
+    desc: "준비물이 치료실 보유 도구와 자동 매칭 — '진행 준비 완료'를 즉시 판별.",
+  },
+  {
+    n: "04",
     icon: PlayCircle,
     title: "진행 + 인쇄",
-    desc: "5섹션 가이드라인 — 준비·진행·변형·안전·평가. 인쇄해 들고 가기.",
+    desc: "5섹션 가이드라인(준비·진행·변형·안전·평가). 영상 보고 인쇄해 들고 가기.",
   },
 ];
 
@@ -45,7 +51,7 @@ export function HowItWorks() {
           </h2>
         </motion.div>
 
-        <ol className="mt-12 grid gap-6 md:grid-cols-3">
+        <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <motion.li
               key={s.n}
