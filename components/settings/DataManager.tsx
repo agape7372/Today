@@ -20,6 +20,8 @@ const KEYS_TO_RESET = [
   "today-content-overrides-v1",
   "today-custom-tools-v1",
   "today-settings-v1",
+  "today-meeting-v1",
+  "today-meeting-author-v1",
   "today-pin-hash-v1",
   "today-pin-session-v1",
 ];
