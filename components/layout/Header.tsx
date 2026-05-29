@@ -14,6 +14,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { href: "/", label: "소개" },
+  { href: "/manual", label: "메뉴얼", matchPrefix: true },
   { href: "/games", label: "게임 카드", matchPrefix: true },
   { href: "/inventory", label: "현황", matchPrefix: true },
   { href: "/settings", label: "설정", matchPrefix: true },
