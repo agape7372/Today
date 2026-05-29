@@ -39,9 +39,16 @@ export function EvidenceStrip({ stats }: { stats: SiteStats }) {
         </ul>
 
         <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-[var(--fg-muted)] leading-relaxed">
-          Sweller(1988) 인지부하 · Taub(1999) CIMT · Thaut(1997) Rhythmic Auditory
-          Stimulation · LSVT BIG · Otago Program · Fugl-Meyer · Berg Balance Scale.
-          <br />각 게임 카드에 학술 근거가 함께 표시됨.
+          Sweller(1988) 인지부하 · Taub(1999) CIMT · Thaut(1997) RAS · Mora-Ripoll(2010)
+          웃음치료 · Woods(2018) Cochrane 회상치료 · Fugl-Meyer · Berg · Otago.
+          <br />각 게임 카드에 학술 근거가 함께 표시되며,{" "}
+          <a
+            href="/references"
+            className="font-medium text-brand-600 underline-offset-2 hover:underline dark:text-brand-400"
+          >
+            전체 학술 근거 모음
+          </a>
+          에서 한눈에 볼 수 있음.
         </p>
       </div>
     </section>

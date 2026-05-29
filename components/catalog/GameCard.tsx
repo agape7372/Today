@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Users, Clock, Sparkles } from "lucide-react";
 import type { Game, TraitKey } from "@/lib/types";
-import { DOMAIN_LABELS, TRAIT_LABELS } from "@/lib/constants";
+import { TRAIT_LABELS } from "@/lib/constants";
 import { StrengthBadges } from "./StrengthBadges";
 import { FavoriteButton } from "./FavoriteButton";
 
@@ -17,13 +17,8 @@ export function GameCard({ game, highlightTrait }: GameCardProps) {
         href={`/games/${game.slug}`}
         className="block h-full rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--bg-elevated)] p-5 shadow-soft transition-all hover:-translate-y-1 hover:shadow-lifted focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:outline-none"
       >
-        {/* 영역 라벨 — 가장 작고 흐릿 */}
-        <p className="text-[10px] font-medium uppercase tracking-widest text-brand-600/80 dark:text-brand-400/80">
-          {game.domains.map((d) => DOMAIN_LABELS[d]).join(" · ")}
-        </p>
-
         {/* 제목 — 가장 큰 시각 요소 (위계 1순위) */}
-        <h3 className="mt-1.5 pr-10 text-xl font-bold tracking-tight leading-tight">
+        <h3 className="pr-10 text-xl font-bold tracking-tight leading-tight">
           {game.name}
         </h3>
 

@@ -6,10 +6,12 @@ import { ArrowRight } from "lucide-react";
 import type { Game } from "@/lib/types";
 import { GameCard } from "@/components/catalog/GameCard";
 import { useGamesWithOverrides } from "@/lib/trait-overrides";
+import { useGamesWithContent } from "@/lib/content-overrides";
 
 export function PreviewGrid({ games }: { games: Game[] }) {
-  // 트레잇 override 적용 — 랜딩 미리보기도 카탈로그와 일관
-  const adjusted = useGamesWithOverrides(games);
+  // 트레잇 + 내용(이름·요약) override 적용 — 랜딩 미리보기도 카탈로그와 일관
+  const traited = useGamesWithOverrides(games);
+  const adjusted = useGamesWithContent(traited);
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
       <motion.div

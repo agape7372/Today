@@ -7,7 +7,7 @@ import { TraitsBreakdown } from "@/components/detail/TraitsBreakdown";
 import { VideoEmbed } from "@/components/detail/VideoEmbed";
 import { MaterialsSafety } from "@/components/detail/MaterialsSafety";
 import { MaterialChips } from "@/components/detail/MaterialChips";
-import { GuidelineBody } from "@/components/detail/GuidelineBody";
+import { EditableGuideline } from "@/components/detail/EditableGuideline";
 import { ReferenceList } from "@/components/detail/ReferenceList";
 import { PrintButton } from "@/components/detail/PrintButton";
 
@@ -67,7 +67,7 @@ export default async function GameDetailPage({
           </p>
           <PrintButton />
         </div>
-        <GuidelineBody source={game.body} />
+        <EditableGuideline slug={game.slug} body={game.body} />
       </section>
 
       <ReferenceList references={game.references} />

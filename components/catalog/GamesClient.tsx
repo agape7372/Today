@@ -13,6 +13,7 @@ import {
 } from "@/lib/filters";
 import { useFavorites } from "@/lib/favorites";
 import { useGamesWithOverrides } from "@/lib/trait-overrides";
+import { useGamesWithContent } from "@/lib/content-overrides";
 import { GameCard } from "./GameCard";
 import { SortBar } from "./SortBar";
 import { SearchBar } from "./SearchBar";
@@ -29,8 +30,9 @@ export function GamesClient({ initialGames }: GamesClientProps) {
   const params = useSearchParams();
   const { favs, count: favCount } = useFavorites();
 
-  // Trait override 적용 — 카탈로그·정렬·강점 태그 모두 자동 반영
-  const games = useGamesWithOverrides(initialGames);
+  // Trait override + 내용(이름·요약) override 적용 — 카탈로그·정렬·검색 모두 자동 반영
+  const traited = useGamesWithOverrides(initialGames);
+  const games = useGamesWithContent(traited);
 
   const [filters, setFilters] = useState<FilterState>(() => {
     if (typeof window === "undefined") return EMPTY_FILTERS;
@@ -98,7 +100,7 @@ export function GamesClient({ initialGames }: GamesClientProps) {
                   ? "bg-warm-300/30 text-warm-700 dark:bg-warm-500/20 dark:text-warm-300"
                   : "border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--fg-muted)] hover:text-[var(--fg)]",
               )}
-              aria-pressed={filters.favOnly}
+              aria-pressed={Boolean(filters.favOnly)}
             >
               <Star
                 className={cn("h-3 w-3", filters.favOnly && "fill-current")}
