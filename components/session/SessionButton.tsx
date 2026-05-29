@@ -62,11 +62,11 @@ export function SessionButton({
       aria-label={inSession ? "오늘 세션에서 빼기" : "오늘 세션에 담기"}
       aria-pressed={inSession}
       className={cn(
-        "inline-flex items-center justify-center rounded-full transition-all no-print",
+        "inline-flex items-center justify-center rounded-full transition-all no-print hover:bg-[var(--line)]",
         wh,
         inSession
-          ? "bg-brand-500 text-white hover:bg-brand-600"
-          : "bg-transparent text-[var(--fg-muted)] hover:bg-[var(--line)] hover:text-brand-600",
+          ? "text-brand-600 dark:text-brand-400"
+          : "text-[var(--fg-muted)] hover:text-brand-600",
         className,
       )}
     >
