@@ -2,12 +2,12 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export const size = { width: 32, height: 32 };
+export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-export default async function Icon() {
-  // Satori's default font has no Hangul glyphs, so "오늘" renders as tofu
-  // without an embedded Korean font. Load the committed Pretendard subset.
+// Apple touch icon: full-bleed gradient, no transparency / corner radius —
+// iOS applies its own rounded mask. Korean font embedded so "오늘" isn't tofu.
+export default async function AppleIcon() {
   const font = await readFile(
     join(process.cwd(), "public/fonts/Pretendard-Bold.subset.ttf"),
   );
@@ -16,7 +16,7 @@ export default async function Icon() {
     (
       <div
         style={{
-          fontSize: 16,
+          fontSize: 84,
           background: "linear-gradient(135deg, #10b981 0%, #0ea5e9 100%)",
           width: "100%",
           height: "100%",
@@ -27,7 +27,6 @@ export default async function Icon() {
           fontFamily: "Pretendard",
           fontWeight: 700,
           letterSpacing: "-0.05em",
-          borderRadius: 8,
         }}
       >
         오늘
