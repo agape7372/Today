@@ -26,6 +26,11 @@ export const metadata: Metadata = {
     "치료사 도구",
   ],
   authors: [{ name: "오늘 뭐하지" }],
+  appleWebApp: {
+    capable: true,
+    title: "오늘",
+    statusBarStyle: "default",
+  },
   openGraph: {
     title: "오늘 뭐하지 — 참여형 재활 게임 카탈로그",
     description: "치료사가 30초 안에 오늘의 게임을 결정하는 도구.",
